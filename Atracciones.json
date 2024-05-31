@@ -1,0 +1,13 @@
+[
+    {"identificador": 1, "tiempo_espera": 15, "nombre": "Montaña Rusa del Dragón"},
+    {"identificador": 2, "tiempo_espera": 20, "nombre": "Carrusel Encantado"},
+    {"identificador": 3, "tiempo_espera": 10, "nombre": "Túnel del Terror"},
+    {"identificador": 4, "tiempo_espera": 25, "nombre": "Rueda de la Fortuna Gigante"},
+    {"identificador": 5, "tiempo_espera": 30, "nombre": "Casa de los Espejos"},
+    {"identificador": 6, "tiempo_espera": 20, "nombre": "Laberinto de Cristal"},
+    {"identificador": 7, "tiempo_espera": 15, "nombre": "Barco Pirata"},
+    {"identificador": 8, "tiempo_espera": 10, "nombre": "Tirolesa Aventurera"},
+    {"identificador": 9, "tiempo_espera": 35, "nombre": "Torre de Caída Libre"},
+    {"identificador": 10, "tiempo_espera": 40, "nombre": "Cinema 4D de Aventuras"}
+  ]
+  
