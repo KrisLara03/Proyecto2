@@ -3,7 +3,7 @@
 #include <fstream>
 #include <nlohmann/json.hpp>
 #include "csv.h"
-#include <limits> // Añadí esta línea para usar numeric_limits
+#include <limits> 
 
 using json = nlohmann::json;
 
