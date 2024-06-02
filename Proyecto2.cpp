@@ -4,8 +4,9 @@
 #include <nlohmann/json.hpp>
 #include "csv.h"
 #include <limits> 
-
 using json = nlohmann::json;
+
+//---------------------------------------------------
 
 // Nodo del Árbol de Decisiones
 struct Nodo {
@@ -15,6 +16,8 @@ struct Nodo {
     std::vector<int> atracciones; // Solo en nodos hoja
 };
 
+//---------------------------------------------------
+
 // Estructura para la información de atracciones
 struct Atraccion {
     int id;
@@ -22,10 +25,14 @@ struct Atraccion {
     int tiempoEspera;
 };
 
+//---------------------------------------------------
+
 // Estructura para el Grafo
 struct Grafo {
     std::vector<std::vector<int>> matrizAdyacencia;
 };
+
+//---------------------------------------------------
 
 // Funciones para construir y manipular el Grafo
 void construirGrafo(Grafo& grafo, const std::string& archivoCSV) {
@@ -42,13 +49,40 @@ void construirGrafo(Grafo& grafo, const std::string& archivoCSV) {
     }
 }
 
+//---------------------------------------------------
+
 // Funciones para construir y manipular el Árbol de Decisiones
-Nodo* leerArbolDecisiones(const std::string& archivoJSON);
-Nodo* construirArbol(const json& j);
+
+Nodo* construirArbol(const json& j) {
+    Nodo* nodo = new Nodo();
+    nodo->pregunta = j["pregunta"];
+    if (j.contains("izquierda")) {
+        nodo->izquierda = construirArbol(j["izquierda"]);
+    }
+    if (j.contains("derecha")) {
+        nodo->derecha = construirArbol(j["derecha"]);
+    }
+    if (j.contains("atracciones")) {
+        nodo->atracciones = j["atracciones"].get<std::vector<int>>();
+    }
+    return nodo;
+}
+Nodo* leerArbolDecisiones(const std::string& archivoJSON) {
+    std::ifstream archivo(archivoJSON);
+    json j;
+    archivo >> j;
+
+    // Construir el árbol de decisiones a partir del objeto JSON
+    return construirArbol(j);
+}
+
+//---------------------------------------------------
 
 // Funciones para leer y editar la información de atracciones
 std::vector<Atraccion> leerAtracciones(const std::string& archivoCSV);
 void editarTiempoEspera(std::vector<Atraccion>& atracciones, int id, int nuevoTiempo);
+
+//---------------------------------------------------
 
 // Algoritmo de Dijkstra para encontrar la ruta más corta
 std::vector<int> dijkstra(const Grafo& grafo, int inicio, const std::vector<int>& atracciones) {
@@ -81,6 +115,8 @@ std::vector<int> dijkstra(const Grafo& grafo, int inicio, const std::vector<int>
     return distancia;
 }
 
+//---------------------------------------------------
+
 // Función principal del menú de la aplicación
 void mostrarMenu() {
     std::cout << "1. Usar el árbol de decisiones\n";
@@ -89,6 +125,8 @@ void mostrarMenu() {
     std::cout << "4. Salir\n";
     std::cout << "Seleccione una opción: ";
 }
+
+//---------------------------------------------------
 
 // Implementación de las funciones
 
@@ -108,6 +146,8 @@ void usarArbolDecisiones(Nodo* nodo, const std::vector<Atraccion>& atracciones) 
         return;
     }
 
+//---------------------------------------------------
+
     // Hacer pregunta
     std::cout << nodo->pregunta << " (1. Sí / 2. No): ";
     int respuesta;
@@ -121,6 +161,8 @@ void usarArbolDecisiones(Nodo* nodo, const std::vector<Atraccion>& atracciones) 
         usarArbolDecisiones(nodo, atracciones);
     }
 }
+
+//---------------------------------------------------
 
 // Seleccion manual de atracciones
 
@@ -143,6 +185,7 @@ void seleccionManualDeAtracciones(const Grafo& grafo, const std::vector<Atraccio
     }
 }
 
+//---------------------------------------------------
 
 // Editar el tiempo de espera:
 
@@ -165,7 +208,7 @@ void editarTiempoEspera(std::vector<Atraccion>& atracciones) {
     std::cout << "ID de atracción no encontrado.\n";
 }
 
-
+//---------------------------------------------------
 
 
 int main() {
