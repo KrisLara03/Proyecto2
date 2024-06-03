@@ -79,8 +79,42 @@ Nodo* leerArbolDecisiones(const std::string& archivoJSON) {
 //---------------------------------------------------
 
 // Funciones para leer y editar la información de atracciones
-std::vector<Atraccion> leerAtracciones(const std::string& archivoCSV);
-void editarTiempoEspera(std::vector<Atraccion>& atracciones, int id, int nuevoTiempo);
+std::vector<Atraccion> leerAtracciones(const std::string& archivoJSON) {
+    std::vector<Atraccion> atracciones;
+    std::ifstream archivo(archivoJSON);
+    json j;
+    archivo >> j;
+
+    for (const auto& entrada : j) {
+        Atraccion atraccion;
+        atraccion.id = entrada["id"];
+        atraccion.tiempoEspera = entrada["tiempoEspera"];
+        atraccion.nombre = entrada["nombre"];
+        atracciones.push_back(atraccion);
+    }
+
+    return atracciones;
+}
+
+
+void editarTiempoEspera(std::vector<Atraccion>& atracciones) {
+    std::cout << "Ingrese el ID de la atracción a editar: ";
+    int id;
+    std::cin >> id;
+    
+    std::cout << "Ingrese el nuevo tiempo de espera: ";
+    int nuevoTiempo;
+    std::cin >> nuevoTiempo;
+    
+    for (auto& atraccion : atracciones) {
+        if (atraccion.id == id) {
+            atraccion.tiempoEspera = nuevoTiempo;
+            std::cout << "Tiempo de espera actualizado.\n";
+            return;
+        }
+    }
+    std::cout << "ID de atracción no encontrado.\n";
+}
 
 //---------------------------------------------------
 
@@ -183,29 +217,6 @@ void seleccionManualDeAtracciones(const Grafo& grafo, const std::vector<Atraccio
     for (int i = 0; i < seleccionadas.size(); ++i) {
         std::cout << "ID: " << seleccionadas[i] << ", Distancia: " << distancias[seleccionadas[i]] << "\n";
     }
-}
-
-//---------------------------------------------------
-
-// Editar el tiempo de espera:
-
-void editarTiempoEspera(std::vector<Atraccion>& atracciones) {
-    std::cout << "Ingrese el ID de la atracción a editar: ";
-    int id;
-    std::cin >> id;
-    
-    std::cout << "Ingrese el nuevo tiempo de espera: ";
-    int nuevoTiempo;
-    std::cin >> nuevoTiempo;
-    
-    for (auto& atraccion : atracciones) {
-        if (atraccion.id == id) {
-            atraccion.tiempoEspera = nuevoTiempo;
-            std::cout << "Tiempo de espera actualizado.\n";
-            return;
-        }
-    }
-    std::cout << "ID de atracción no encontrado.\n";
 }
 
 //---------------------------------------------------
